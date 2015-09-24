@@ -17,10 +17,12 @@ var ajaxAdapter,
 module( 'Unit - sl-ember-store/adapter/ajax', {
     beforeEach: function() {
         var container = {
-                registry: [],
+                registry: Ember.A(),
                 cache: {},
-                normalize: function( key ){
-                    return key;
+                _registry: {
+                    normalize: function( key ){
+                        return key;
+                    }
                 },
                 lookup: function( key ){
                     if( this.cache[key] ) return this.cache[key];
@@ -40,7 +42,7 @@ module( 'Unit - sl-ember-store/adapter/ajax', {
             store: Store.create({ container:container })
         });
         //register mock data
-        ajaxAdapter.container.cache['store:main']={
+        ajaxAdapter.container.cache['service:store']={
             runPostQueryHooks: sinon.spy(),
             runPreQueryHooks: sinon.spy()
         };

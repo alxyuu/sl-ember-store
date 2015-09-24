@@ -11,24 +11,24 @@ import DebugAdapter from '../debug-adapter';
  * Register sl-ember-store objects to consuming application
  *
  * @function sl-ember-store
- * @param    {Ember.ContainerView} container
+ * @param    {Ember.Registry}      registry
  * @param    {Ember.Application}   application
  * @returns  {void}
  */
-export default function( container, application ) {
+export default function( registry, application ) {
     var localstorageAdapter = LocalstorageAdapter.extend();
 
     localstorageAdapter.reopenClass({
-        namespace: container.lookup( 'application:main' ).get( 'modulePrefix' )
+        namespace: application.get( 'modulePrefix' )
     });
 
-    container.register( 'data-adapter:main', DebugAdapter );
-    container.register( 'store:main', Store );
-    container.register( 'adapter:ajax', AjaxAdapter );
-    container.register( 'adapter:localstorage', localstorageAdapter );
+    registry.register( 'data-adapter:main', DebugAdapter );
+    registry.register( 'service:store', Store );
+    registry.register( 'adapter:ajax', AjaxAdapter );
+    registry.register( 'adapter:localstorage', localstorageAdapter );
 
-    application.inject( 'controller', 'store', 'store:main' );
-    application.inject( 'route', 'store', 'store:main' );
-    application.inject( 'adapter', 'store', 'store:main' );
-    application.inject( 'data-adapter', 'store', 'store:main' );
+    application.inject( 'controller', 'store', 'service:store' );
+    application.inject( 'route', 'store', 'service:store' );
+    application.inject( 'adapter', 'store', 'service:store' );
+    application.inject( 'data-adapter', 'store', 'service:store' );
 }

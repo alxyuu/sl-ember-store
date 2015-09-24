@@ -30,10 +30,12 @@ module( 'Unit - sl-ember-store/store', {
 
         store = Store.create({
             container: {
-                registry: [],
+                registry: Ember.A(),
                 cache: {},
-                normalize: function( key ){
-                    return key;
+                _registry: {
+                    normalize: function( key ){
+                        return key;
+                    }
                 },
                 lookup: function( key ){
                     if( this.cache[key] ) return this.cache[key];

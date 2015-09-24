@@ -376,8 +376,16 @@ test( '_getRecords, some', function( assert ){
 
 test( '_initializePromises', function( assert ){
     cache._initializePromises( 'test' );
-    assert.equal( cache._promises.test.many.firstObject, null, 'test all promise is null ');
-    assert.equal( Object.keys(cache._promises.test.ids).length, 0, 'test promise object is empty' );
+    assert.strictEqual(
+        cache.get( '_promises.test.many.firstObject' ),
+        undefined,
+        'test all promise is undefined'
+    );
+    assert.strictEqual(
+        Object.keys( cache.get( '_promises.test.ids' ) ).length,
+        0,
+        'test promise object is empty'
+    );
 });
 
 test( '_getPromises, empty', function( assert ){

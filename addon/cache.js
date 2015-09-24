@@ -31,12 +31,15 @@ export default Ember.Object.extend({
      * @observes "init" event
      * @returns  {void}
      */
-    _setupCache: function() {
-        this.setProperties({
-            '_records'  : Ember.Object.create(),
-            '_promises' : Ember.Object.create()
-        });
-    }.on( 'init' ),
+    _setupCache: Ember.on(
+        'init',
+            function() {
+            this.setProperties({
+                '_records'  : Ember.Object.create(),
+                '_promises' : Ember.Object.create()
+            });
+        }
+    ),
 
     /**
      * Checks both caches to see if a record exists
@@ -105,7 +108,7 @@ export default Ember.Object.extend({
             return false;
         }
 
-        return Ember.ObjectProxy.createWithMixins( Ember.PromiseProxyMixin )
+        return Ember.ObjectProxy.extend( Ember.PromiseProxyMixin ).create()
             .set( 'promise', Ember.RSVP.Promise.resolve( record ) );
     },
 
@@ -133,7 +136,7 @@ export default Ember.Object.extend({
             return false;
         }
 
-        return Ember.ObjectProxy.createWithMixins( Ember.PromiseProxyMixin )
+        return Ember.ObjectProxy.extend( Ember.PromiseProxyMixin ).create()
             .set( 'promise', Ember.RSVP.Promise.resolve( record ) );
     },
 
@@ -160,7 +163,7 @@ export default Ember.Object.extend({
             return false;
         }
 
-        return Ember.ArrayProxy.createWithMixins( Ember.PromiseProxyMixin )
+        return Ember.ArrayProxy.extend( Ember.PromiseProxyMixin ).create()
             .set( 'promise', Ember.RSVP.Promise.resolve( records ) );
     },
 
@@ -350,7 +353,7 @@ export default Ember.Object.extend({
     _initializeRecords: function( type ) {
         this.set( '_records.'+type, Ember.Object.create({
             all     : false,
-            records : [],
+            records : Ember.A(),
             ids     : Ember.Object.create()
         }));
     },
@@ -409,7 +412,7 @@ export default Ember.Object.extend({
      */
     _initializePromises: function( type ) {
         this.set( '_promises.' + type, Ember.Object.create({
-            many : Ember.ArrayProxy.create( { content: [] } ),
+            many : Ember.ArrayProxy.create( { content: Ember.A() } ),
             ids : Ember.Object.create()
         }));
     },
@@ -460,7 +463,7 @@ export default Ember.Object.extend({
         if( promises && promises.get( 'length' ) ){
             return Ember.RSVP.allSettled( promises.get( 'content' ) ).then(
                 function( results ){
-                    var records = [];
+                    var records = Ember.A();
                     results.forEach( function( result ){
                         if( result.state === 'fulfilled' ){
                             records = records.concat( result.value );

@@ -24,8 +24,8 @@ test( 'LocalStorage adapter gets namespace set', function( assert ){
     assert.equal( lsAdapter.namespace, container.lookup( 'application:main' ).get( 'modulePrefix' ) );
 });
 
-test( 'store:main gets registered', function( assert ){
-    var store = container.lookupFactory( 'store:main' );
+test( 'service:store gets registered', function( assert ){
+    var store = container.lookupFactory( 'service:store' );
     assert.ok( Store.detect( store ) );
 });
 
@@ -43,7 +43,7 @@ test( 'store gets injected into controllers, routes, adapters', function( assert
     var appRoute = container.lookup( 'route:demos/single-model' ),
         appController,
         ajaxAdapter = container.lookup( 'adapter:ajax' ),
-        store = container.lookup( 'store:main' );
+        store = container.lookup( 'service:store' );
 
     assert.expect( 3 );
 

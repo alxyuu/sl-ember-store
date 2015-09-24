@@ -357,7 +357,7 @@ export default {
     after: 'sl-ember-store',
 
     initialize: function( container ) {
-        container.lookup( 'store:main' ).registerPostQueryHook(
+        container.lookup( 'service:store' ).registerPostQueryHook(
             function( status ) {
                 if ( 401 === status ) {
                     container.lookup( 'controller:application' ).send( 'forceLogout' );

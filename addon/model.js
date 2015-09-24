@@ -146,8 +146,6 @@ Model.reopenClass({
             resolvedSerializer = get( testEndpoint, 'serializer' ) || defaultSerializer;
         }
 
-        Ember.assert( 'A serializer needs to be set for ' + this.toString(), resolvedSerializer );
-
         return resolvedSerializer.call( this, data, store );
     }
 });

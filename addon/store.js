@@ -12,7 +12,7 @@ export default Ember.Object.extend({
      * @property {Ember.Array} preQueryHooks
      * @default  {array}
      */
-    preQueryHooks: [],
+    preQueryHooks: Ember.A(),
 
     /**
      * Array of functions to be run after an adapter runs a query
@@ -20,7 +20,7 @@ export default Ember.Object.extend({
      * @property {Ember.Array} postQueryHooks
      * @default  {array}
      */
-    postQueryHooks: [],
+    postQueryHooks: Ember.A(),
 
     /**
      * Stores all the metadata for all the models
@@ -38,9 +38,12 @@ export default Ember.Object.extend({
      * @observers "init" event
      * @returns   {void}
      */
-    setupcache: function() {
-        this.set( '_cache', cache.create() );
-    }.on( 'init' ),
+    setupcache: Ember.on(
+        'init',
+        function() {
+            this.set( '_cache', cache.create() );
+        }
+    ),
 
     /**
      * Returns the model class for a given model type
@@ -51,7 +54,7 @@ export default Ember.Object.extend({
      * @returns  {function} Model constructor
      */
     modelFor: function( type ) {
-        var normalizedKey = this.container.normalize( 'model:' + type ),
+        var normalizedKey = this.container._registry.normalize( 'model:' + type ),
             factory       = this.container.lookupFactory( normalizedKey );
 
         Ember.assert( 'No model was found for `' + type + '`', factory );

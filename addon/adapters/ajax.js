@@ -44,8 +44,8 @@ export default Adapter.extend({
 
         //set up the results, either an object or an array proxy w/ promise mixin
         results = ( ( options.data && options.data.id  ) || findOne ) ?
-            Ember.ObjectProxy.createWithMixins( Ember.PromiseProxyMixin ) :
-            Ember.ArrayProxy.createWithMixins( Ember.PromiseProxyMixin );
+            Ember.ObjectProxy.extend( Ember.PromiseProxyMixin ).create() :
+            Ember.ArrayProxy.extend( Ember.PromiseProxyMixin ).create();
 
         queryObj = {
             dataType : 'json',
@@ -68,7 +68,7 @@ export default Adapter.extend({
                 response = _self.modelize( response );
 
                 if ( results instanceof Ember.ArrayProxy ) {
-                    tmpResult = [];
+                    tmpResult = Ember.A();
                     Ember.makeArray( response ).forEach( function ( child ) {
                         tmpResult.pushObject( store.createRecord( type, child ) );
                     }, this );

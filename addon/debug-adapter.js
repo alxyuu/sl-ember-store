@@ -18,7 +18,7 @@ export default Ember.DataAdapter.extend({
      * @return {Array}      Array of objs describing model columns
      */
     columnsForType: function( typeClass ) {
-        var columns = [],
+        var columns = Ember.A(),
             type = typeClass._debugContainerKey.replace( 'model:',''),
             record = this.get( 'store' )._cache._getRecords( type ).records[0];
 

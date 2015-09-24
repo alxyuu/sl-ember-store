@@ -28,10 +28,12 @@ module( 'Unit - sl-ember-store/adapter/localstorage', {
             }
         };
         container = {
-            registry: [],
+            registry: Ember.A(),
             cache: {},
-            normalize: function( key ){
-                return key;
+            _registry: {
+                normalize: function( key ){
+                    return key;
+                }
             },
             lookup: function( key ){
                 if( this.cache[key] ) return this.cache[key];
@@ -51,7 +53,7 @@ module( 'Unit - sl-ember-store/adapter/localstorage', {
         });
 
         //register mock data
-        localstorageadapter.container.cache['store:main']={
+        localstorageadapter.container.cache['service:store']={
             runPostQueryHooks: sinon.spy(),
             runPreQueryHooks: sinon.spy()
         };
@@ -131,7 +133,7 @@ asyncTest( 'save', function( assert ){
 
     response = localstorageadapter.save( '/foo', foo );
     response.then( function(){
-        var fooRecords = JSON.parse(localStorage.getItem('sl-ember-store')).foo,
+        var fooRecords = Ember.A( JSON.parse( localStorage.getItem( 'sl-ember-store' ) ).foo ),
             fooRecord = fooRecords.findBy( 'id', 2 );
 
         assert.ok( response.then, 'response is a promise' );
@@ -153,7 +155,7 @@ asyncTest( 'delete', function( assert ){
             response.then( function(){
                 assert.ok( response.then, 'response is a promise' );
 
-                var fooRecords = [ JSON.parse(localStorage.getItem('sl-ember-store')).foo ],
+                var fooRecords = Ember.A([ JSON.parse(localStorage.getItem('sl-ember-store')).foo ]),
                     fooRecord = fooRecords.findBy( 'id', 2 );
 
                 assert.equal( fooRecord, undefined, 'should have deleted the record to the mock ls object' );

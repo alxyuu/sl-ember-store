@@ -14,7 +14,7 @@ export default Ember.Object.extend( ModelizeMixin, {
      * @returns  {void}
      */
     runPreQueryHooks: function( query ) {
-        this.get( 'container' ).lookup( 'store:main' ).runPreQueryHooks( query );
+        this.get( 'container' ).lookup( 'service:store' ).runPreQueryHooks( query );
     },
 
     /**
@@ -25,7 +25,7 @@ export default Ember.Object.extend( ModelizeMixin, {
      * @returns  {void}
      */
     runPostQueryHooks: function( response ) {
-        this.get( 'container' ).lookup( 'store:main' ).runPostQueryHooks( response );
+        this.get( 'container' ).lookup( 'service:store' ).runPostQueryHooks( response );
     },
 
     /**

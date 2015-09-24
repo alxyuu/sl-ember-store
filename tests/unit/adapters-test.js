@@ -13,7 +13,7 @@ module( 'Unit - sl-ember-store/adapter', {
         adapter = Adapter.create({
             container:{
                 lookup: function( type ){
-                    if( type === 'store:main' )
+                    if( type === 'service:store' )
                         return store;
                     else
                         Ember.Assert( 'Container could not find "'+type+'"', false);
